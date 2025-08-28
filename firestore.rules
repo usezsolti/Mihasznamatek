@@ -1,0 +1,35 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Felhasználók gyűjtemény
+    match /users/{userId} {
+      // Mindenki olvashatja a saját adatait
+      allow read: if request.auth != null && request.auth.uid == userId;
+      // Mindenki írhatja a saját adatait
+      allow write: if request.auth != null && request.auth.uid == userId;
+      // Admin olvashatja az összes felhasználót
+      allow read: if request.auth != null && request.auth.uid == "4lUUn5fX4sZ79pVoy5y4t3hJFpF3";
+    }
+    
+    // Feladatok gyűjtemény
+    match /tasks/{taskId} {
+      // Diákok csak a saját feladataikat olvashatják
+      allow read: if request.auth != null && resource.data.studentId == request.auth.uid;
+      // Diákok csak a saját feladataikat frissíthetik
+      allow update: if request.auth != null && resource.data.studentId == request.auth.uid;
+      // Admin olvashatja és írhatja az összes feladatot
+      allow read, write: if request.auth != null && request.auth.uid == "4lUUn5fX4sZ79pVoy5y4t3hJFpF3";
+    }
+    
+    // Időpontfoglalások gyűjtemény
+    match /bookings/{bookingId} {
+      // Mindenki olvashatja a saját foglalásait
+      allow read: if request.auth != null && resource.data.userId == request.auth.uid;
+      // Mindenki írhatja a saját foglalásait
+      allow write: if request.auth != null && resource.data.userId == request.auth.uid;
+      // Admin olvashatja és írhatja az összes foglalást
+      allow read, write: if request.auth != null && request.auth.uid == "4lUUn5fX4sZ79pVoy5y4t3hJFpF3";
+    }
+  }
+}
+

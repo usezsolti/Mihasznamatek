@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title></title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.emailjs.com/sdk/2.3.2/email.min.js"></script>
+
+   <meta charset="UTF-8">
+  <title>Google Maps beágyazás</title>
+  <style>
+    /* A térkép konténerének méretezése */
+    #map {
+      width: 100%;
+      height: 400px;
+      border: 1px solid #ccc;
+    }
+  </style>
+</head>
+
+<!-- Firebase App (core) -->
+<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+<!-- Firebase Auth -->
+<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
+
+<body>
+
+  <nav>
+    <!-- Bal oldalon csak a logó -->
+    <div class="logo">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="48" height="48">
+        <defs>
+          <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#39FF14"/>
+            <stop offset="100%" stop-color="#FF49DB"/>
+          </linearGradient>
+          <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+            <feMerge>
+              <feMergeNode in="coloredBlur"/>
+              <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+          </filter>
+        </defs>
+        <text x="40%" y="60%" text-anchor="middle"
+              font-family="Montserrat, sans-serif" font-weight="700" font-size="100"
+              fill="url(#grad)" filter="url(#glow)">∑</text>
+        <text x="60%" y="60%" text-anchor="middle"
+              font-family="Montserrat, sans-serif" font-weight="700" font-size="100"
+              fill="url(#grad)" filter="url(#glow)">∫</text>
+      </svg>
+    </div>
+
+    <!-- Jobb oldalon a menülista és a lenyíló gomb -->
+    <ul class="nav-links">
+      <li><a href="#about">Rólam</a></li>
+      <li><a href="#courses">Kiket vállalok?</a></li>
+      <li><a href="#testimonials">Vélemények</a></li>
+      <li><a href="#contact">Kapcsolat</a></li>
+    </ul>
+    <button class="nav-toggle" aria-label="Menü megnyitása">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </nav>
+
+  <!-- HERO (háttérkép a 5. fotóból, jobbról csúszik be) -->
+  <header class="has-bg" data-bg="Tanárképek1.png">
+    <div class="bg-image from-right"></div>
+    <div class="hero-content">
+      <h1></h1>
+      <p></p>
+      <a href="#contact" class="btn btn-neon-green">Kezdjük el!</a>
+    </div>
+  </header>
+
+  <!-- RÓLAM (1. kép balról) -->
+  <section id="about" class="section has-bg" data-bg="Tanárképek2.png">
+    <div class="bg-image from-left"></div>
+    <h2></h2>
+    <div class="about-flex">
+      <p>
+      </p>
+    </div>
+  </section>
+
+  <!-- KURZUSOK (2. kép jobbról) -->
+  <section id="courses" class="section alt-bg has-bg" data-bg="Tanárképek3.png">
+    <div class="bg-image from-right"></div>
+    <h2></h2>
+  </section>
+
+  <!-- VÉLEMÉNYEK (3. kép balról) -->
+  <section id="testimonials" class="section has-bg" data-bg="Vélemények1.png">
+    <div class="bg-image from-left"></div>
+  </section>
+
+  <section id="testimonials" class="section has-bg" data-bg="Vélemények2.png">
+    <div class="bg-image from-left"></div>
+  </section>
+
+  <section id="testimonials" class="section has-bg" data-bg="Vélemények3.png">
+    <div class="bg-image from-left"></div>
+  </section>
+
+  <section id="testimonials" class="section has-bg" data-bg="Vélemények4.png">
+    <div class="bg-image from-left"></div>
+  </section>
+
+  <section id="testimonials" class="section has-bg" data-bg="Vélemények5.png">
+    <div class="bg-image from-left"></div>
+  </section>
+
+  <section id="testimonials" class="section has-bg" data-bg="Vélemények6.png">
+    <div class="bg-image from-left"></div>
+  </section>
+
+  <section id="testimonials" class="section has-bg" data-bg="Vélemények7.png">
+    <div class="bg-image from-left"></div>
+  </section>
+
+  <section id="testimonials" class="section has-bg" data-bg="Vélemények8.png">
+    <div class="bg-image from-left"></div>
+  </section>
+
+  <section id="testimonials" class="section has-bg" data-bg="Vélemények9.png">
+    <div class="bg-image from-left"></div>
+  </section>
+
+  <section id="testimonials" class="section has-bg" data-bg="Vélemények10.png">
+    <div class="bg-image from-left"></div>
+  </section>
+  <section id="testimonials" class="section has-bg" data-bg="Vélemények11.png">
+    <div class="bg-image from-left"></div>
+  </section>
+    <section id="testimonials" class="section has-bg" data-bg="Vélemények12.png">
+    <div class="bg-image from-left"></div>
+  </section>
+
+
+  <!-- KAPCSOLAT (4. kép jobbról) -->
+  <section id="contact" class="section alt-bg has-bg" data-bg="Kapcsolat1.png">
+    <div class="bg-image from-right"></div>
+    <h2></h2>
+  </section>
+
+<!-- MAP SZEKCIÓ háttérképpel -->
+<section id="map-section" class="map-section">
+  <h2>Helyszín</h2>
+  <p>2151 Fót, Szent Imre utca 18</p>
+
+  <!-- A térkép konténere -->
+  <div class="map-container">
+    <div id="map"></div>
+  </div>
+</section>
+
+<!-- Saját JS: initMap és geocoder-hívás -->
+<script src="main.js"></script>
+<!-- Google Maps JS API: kulcs+callback -->
+<script
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC8buQgc8XSH3FPfLaVKFo5hMVMNF5bJv0&callback=initMap"
+  async defer>
+</script>
+
+<!-- EMAIL SZEKCIÓ -->
+<section id="email" class="section email-section">
+  <div class="section-content">
+    <h2>Írj nekem</h2>
+    <form id="email-form">
+      <input type="text" name="user_name"    placeholder="Név"  required>
+      <input type="email" name="user_email"  placeholder="Email" required>
+      <textarea name="message"               placeholder="Üzenet" rows="5" required></textarea>
+      <button type="submit" class="btn btn-neon-pink">Küldés</button>
+    </form>
+    <p id="form-status" style="margin-top:1rem;"></p>
+  </div>
+</section>
+
+<!-- index.html HEAD-ben -->
+<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
+<link rel="stylesheet" href="style.css">
+
+<section class="auth-section">
+    <div class="auth-box">
+
+      <!-- csak a regisztráció fül -->
+      <h2>Diák fiók</h2>
+      <button id="go-register" class="btn btn-neon-green">Regisztráció</button>
+
+      <!-- és a bejelentkezés -->
+      <h3>Bejelentkezés</h3>
+      <form id="login-form" class="auth-form">
+        <input type="email"    id="login-email"    placeholder="Email" required>
+        <input type="password" id="login-password" placeholder="Jelszó" required>
+        <button type="submit" class="btn btn-neon-green">Bejelentkezés</button>
+        <p class="form-msg" id="login-msg"></p>
+      </form>
+
+    </div>
+  </section>
+
+  <script>
+    // Regisztráció gomb átirányít
+    document.getElementById('go-register').addEventListener('click', () => {
+      window.location.href = 'register.html';
+    });
+  </script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
+  <script src="main.js"></script>
+
+
+</html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Saját Fiók – Mihaszna Matek</title>
+  <!-- ide csatoljuk a saját stíluslapunkat -->
+  <link rel="stylesheet" href="dashboard.css">
+</head>
+<body>
+  <!-- Fejléc -->
+  <header>
+    <h1>Üdvözöllek a Saját Fiókodban!</h1>
+    <button id="logout-btn">Kijelentkezés</button>
+  </header>
+
+  <!-- Fő tartalom -->
+  <main id="dashboard-content">
+    <section class="welcome">
+      <p>Itt fogod látni az oktatási anyagaid listáját.</p>
+    </section>
+
+    <section class="materials-list">
+      <h2>Anyagok</h2>
+      <div id="materials-container">
+        <!-- ide kerülnek majd a listázott anyag-kártyák -->
+        <p class="empty-msg">Még nincs elérhető anyagod.</p>
+      </div>
+    </section>
+  </main>
+
+  <!-- Saját JS -->
+  <script src="dashboard.js"></script>
+</body>
+</html>

@@ -1,0 +1,579 @@
+/* style.css */
+
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@300;400;700&family=Montserrat:ital,wght@0,400;0,600;0,700&family=Open+Sans:wght@400;600&display=swap');
+
+/* CSS Variables */
+:root {
+  --neon-green: #39ff14;
+  --neon-pink: #ff49db;
+  --text-color: #ffffff;
+}
+
+/* Reset & Base Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  background: none;
+  color: var(--text-color);
+  font-family: 'Open Sans', sans-serif;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+  line-height: 1.6;
+}
+/* Navigation */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 1rem;
+  background: rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+}
+
+.logo svg {
+  display: block;
+}
+
+/* Alap: mobilnézetben rejtett vízszintes menü */
+.nav-links {
+  display: none;
+  position: fixed;
+  top: 0; right: 0;
+  width: 250px;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.9);
+  backdrop-filter: blur(8px);
+  transform: translateX(100%);
+  transition: transform 0.3s ease-in-out;
+  padding-top: 60px;
+  list-style: none;
+  flex-direction: column;
+}
+
+/* Hamburgerre kattintva */
+.nav-links.open {
+  transform: translateX(0);
+  display: flex;
+}
+
+.nav-links li a {
+  display: block;
+  padding: 0.75rem 1.5rem;
+  color: var(--text-color);
+  text-decoration: none;
+  font-size: 1.25rem;
+  transition: color 0.3s;
+}
+
+.nav-links li a:hover {
+  color: var(--neon-green);
+}
+
+/* Hamburger ikon */
+.nav-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 30px;
+  height: 20px;
+  z-index: 1100;
+}
+.nav-toggle span {
+  display: block;
+  height: 3px;
+  background: var(--text-color);
+  border-radius: 2px;
+}
+
+/* Desktop nézet (≥768px): mindig látható menüsor, hamburger eltűnik */
+@media (min-width: 768px) {
+  .nav-links {
+    display: flex !important;
+    position: static;
+    transform: none;
+    flex-direction: row;
+    background: transparent;
+    height: auto;
+    width: auto;
+    padding: 0;
+  }
+  .nav-links li a {
+    padding: 0 1rem;
+  }
+  .nav-toggle {
+    display: none;
+  }
+}
+
+
+/* Full-bleed Sections with Background Images */
+.has-bg {
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+}
+.bg-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+  z-index: -1;
+}
+.bg-image.from-left { transform: translateX(-100px); }
+.bg-image.from-right { transform: translateX(100px); }
+.bg-image.is-visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Content Containers */
+header,
+.section {
+  position: relative;
+  width: 100vw;
+  padding: 6rem 2rem 4rem;
+  z-index: 1;
+}
+
+header .hero-content,
+.section h2,
+.section .about-flex,
+.section .cards-grid,
+.section blockquote,
+.section form {
+  position: relative;
+  z-index: 2;
+}
+
+header .hero-content {
+  text-align: center;
+}
+header h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  text-shadow: 0 0 8px var(--neon-pink);
+}
+header p {
+  font-size: 1.25rem;
+  margin-bottom: 2rem;
+  text-shadow: 0 0 5px var(--neon-pink);
+}
+
+/* Buttons */
+.btn {
+  display: inline-block;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  text-transform: uppercase;
+  text-decoration: none;
+  border-radius: 9999px;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+.btn-neon-green {
+  background: var(--neon-green);
+  color: #000;
+  padding: 1rem 2rem;
+}
+.btn-neon-pink {
+  background: var(--neon-pink);
+  color: #000;
+  padding: 1rem 2rem;
+}
+.btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 10px currentColor,
+              0 0 20px currentColor,
+              0 0 30px rgba(255, 255, 255, 0.2);
+}
+
+/* About Section */
+.about-flex {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  justify-content: center;
+  align-items: center;
+}
+.about-flex img {
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 50%;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+}
+.about-flex p {
+  max-width: 600px;
+}
+
+/* Courses Grid */
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+.card {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 1rem;
+  padding: 2rem;
+  transition: box-shadow 0.3s;
+}
+.card:hover {
+  box-shadow: 0 0 10px var(--neon-green),
+              0 0 20px var(--neon-green),
+              0 0 30px rgba(57, 255, 20, 0.3);
+}
+
+/* Testimonials */
+blockquote {
+  border-left: 4px solid var(--neon-green);
+  padding-left: 1rem;
+  font-style: italic;
+  margin: 2rem 0;
+}
+
+/* Contact Form */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-width: 500px;
+  margin: 0 auto;
+}
+form input,
+form textarea {
+  background: rgba(255, 255, 255, 0.05);
+  border: none;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  color: var(--text-color);
+  transition: box-shadow 0.3s;
+}
+form input:focus,
+form textarea:focus {
+  outline: none;
+  box-shadow: 0 0 5px var(--neon-green),
+              0 0 10px var(--neon-green),
+              0 0 20px rgba(57, 255, 20, 0.3);
+}
+
+/* Responsive */
+@media (min-width: 768px) {
+  .nav-links {
+    display: flex;
+    position: static;
+    transform: none;
+    background: none;
+    backdrop-filter: none;
+    flex-direction: row;
+    gap: 2rem;
+    padding-top: 0;
+  }
+  .nav-toggle {
+    display: none;
+  }
+}
+@media (max-width: 767px) {
+  header,
+  .section {
+    padding-top: 80px;
+  }
+}
+
+/* Alap reset és testreszabások */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Test és html, hogy a teljes magasságot fel tudjuk használni, ha szükséges */
+html, body {
+  height: 100%;
+  font-family: Arial, sans-serif;
+  color: #333;
+  background-color: #f9f9f9;
+}
+
+/* Címsor alatti margó */
+h1 {
+  margin: 20px;
+  font-size: 1.5rem;
+  text-align: center;
+  color: #222;
+}
+
+/* Reset + alapbeállítások */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+html, body {
+  height: 100%;
+  font-family: Arial, sans-serif;
+  background: #f9f9f9;
+  color: #333;
+}
+h1 {
+  margin: 20px;
+  text-align: center;
+}
+
+/* MAP SZEKCIÓ */
+.map-section {
+  position: relative;
+  padding: 4rem 2rem;
+  text-align: center;
+  color: #000000;
+
+  /* Ide tesszük a háttérképet */
+  background-image: url('Map.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* A szekció címe és szövege fölött maradjon */
+.map-section > h2,
+.map-section > p,
+.map-container {
+  position: relative;
+  z-index: 1;
+}
+
+/* Térkép konténer – itt jelenik meg a Google Map */
+.map-container {
+  width: 100%;
+  max-width: 800px;
+  margin: 2rem auto 0;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+}
+
+/* Maga a #map doboz: ennek változtasd a magasságát, ha túl nagy */
+#map {
+  width: 100%;
+  height: 300px;  /* CSÖKKENTS DPL: pl. 250px-re vagy 200px-re */
+}
+
+/* Mobilon kisebb magasság */
+@media (max-width: 768px) {
+  #map {
+    height: 200px;
+  }
+  .map-section {
+    padding: 2rem 1rem;
+  }
+}
+
+.email-section {
+  background: #000;
+  padding: 4rem 2rem;
+  color: #fff;
+  text-align: center;
+}
+.email-section .section-content {
+  max-width: 600px;
+  margin: auto;
+  background: rgba(0,0,0,0.6);
+  padding: 2rem;
+  border-radius: 8px;
+}
+.email-section input,
+.email-section textarea {
+  width: 100%;
+  padding: 0.75rem;
+  margin-bottom: 1rem;
+  border: none;
+  border-radius: 4px;
+  background: rgba(255,255,255,0.1);
+  color: #fff;
+}
+.email-section input:focus,
+.email-section textarea:focus {
+  outline: none;
+  box-shadow: 0 0 5px #ff49db;
+}
+.email-section .btn-neon-pink {
+  padding: 1rem 2rem;
+}
+
+.auth-section {
+  background: #000;
+  color: #fff;
+  padding: 3rem 1rem;
+  text-align: center;
+}
+.auth-box {
+  max-width: 400px;
+  margin: auto;
+  background: rgba(255,255,255,0.05);
+  padding: 2rem;
+  border-radius: 8px;
+}
+.auth-form {
+  margin-bottom: 2rem;
+}
+.auth-form input {
+  width: 100%;
+  padding: 0.75rem;
+  margin: 0.5rem 0;
+  border: none;
+  border-radius: 4px;
+  background: rgba(255,255,255,0.1);
+  color: #fff;
+}
+.auth-form button {
+  background: #39ff14;
+  color: #000;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 9999px;
+  cursor: pointer;
+}
+.form-msg {
+  font-size: 0.9rem;
+  color: #ff49db;
+  min-height: 1.2em;
+}
+.hidden { display: none; }
+
+
+
+
+
+
+
+/* register.css vagy style.css végén */
+
+/* ----- Alap konténer ----- */
+.auth-section {
+  background: #000;           /* fekete hátteret feltételezünk */
+  color: #fff;
+  padding: 4rem 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: start;
+  min-height: 100vh;
+}
+
+/* ----- Doboz a formnak ----- */
+.auth-box {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 2rem;
+  border-radius: 0.75rem;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+}
+
+/* ----- Címek ----- */
+.auth-box h2,
+.auth-box h3 {
+  font-family: 'Playfair Display', serif;
+  text-align: center;
+  margin-bottom: 1rem;
+  color: var(--text-color);
+}
+
+/* ----- Az űrlap ----- */
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+/* ----- Input, select ----- */
+.auth-form input,
+.auth-form select {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 0.5rem;
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-color);
+  transition: background 0.3s, box-shadow 0.3s;
+}
+.auth-form input:focus,
+.auth-form select:focus {
+  outline: none;
+  background: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 0 4px var(--neon-green);
+}
+
+/* ----- Gomb ----- */
+.auth-form button {
+  background: var(--neon-green);
+  color: #000;
+  font-weight: 600;
+  text-transform: uppercase;
+  border: none;
+  border-radius: 9999px;
+  padding: 0.75rem;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.auth-form button:hover {
+  transform: scale(1.03);
+  box-shadow:
+    0 0 10px var(--neon-green),
+    0 0 20px var(--neon-green),
+    0 0 30px rgba(57,255,20,0.3);
+}
+
+/* ----- Üzenetsorok ----- */
+.form-msg {
+  font-size: 0.9rem;
+  min-height: 1.2em;
+  color: var(--neon-pink);
+  text-align: center;
+}
+
+/* ----- Alul lévő link ----- */
+.auth-box p {
+  font-size: 0.9rem;
+  text-align: center;
+  color: #ccc;
+}
+.auth-box p a {
+  color: var(--neon-green);
+  text-decoration: none;
+}
+.auth-box p a:hover {
+  text-decoration: underline;
+}
+
+/* ----- Mobilra ----- */
+@media (max-width: 480px) {
+  .auth-box {
+    padding: 1.5rem;
+  }
+  .auth-form button {
+    padding: 0.65rem;
+  }
+}
+
+
+

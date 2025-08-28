@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Diák fiók – Regisztráció</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <section class="auth-section">
+    <div class="auth-box">
+
+      <h2>Regisztráció</h2>
+      <form id="signup-form" class="auth-form">
+        <input type="text"     id="student-name"    placeholder="Teljes név" required>
+        <input type="email"    id="signup-email"    placeholder="Email"      required>
+        <input type="password" id="signup-password" placeholder="Jelszó"     required>
+        <input type="tel"      id="signup-phone"    placeholder="Telefonszám" required>
+        <!-- bármilyen további mező -->
+        <select id="signup-grade" required>
+          <option value="">Évfolyam</option>
+          <option>1. osztály</option>
+          <option>2. osztály</option>
+          <option>3. osztály</option>
+          <option>4. osztály</option>
+          <option>5. osztály</option>
+          <option>6. osztály</option>
+          <option>7. osztály</option>
+          <option>8. osztály</option>
+          <option>9. osztály</option>
+          <option>10. osztály</option>
+          <option>11. osztály</option>
+          <option>12. osztály</option>
+          <option>13. osztály</option>
+          <!-- stb. -->
+        </select>
+        <button type="submit" class="btn btn-neon-green">Regisztrálok</button>
+        <p class="form-msg" id="signup-msg"></p>
+      </form>
+
+      <p style="margin-top:1rem; font-size:0.9rem;">
+        Már van fiókod?
+        <a href="index.html" style="color:var(--neon-green)">Bejelentkezés</a>
+      </p>
+    </div>
+
+    
+
+  </section>
+
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
+  <script src="register.js"></script>
+
+
+
+</body>
+</html>
