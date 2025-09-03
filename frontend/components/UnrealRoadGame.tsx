@@ -61,7 +61,7 @@ const billboardData: BillboardData[] = [
 
 const UnrealRoadGame: React.FC = () => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
-    const [currentBillboard, setCurrentBillboard] = useState(0);
+    const [currentBillboard] = useState(0);
     const [isLoading, setIsLoading] = useState(true);
     const [isClient, setIsClient] = useState(false);
     const sceneRef = useRef<Scene | null>(null);

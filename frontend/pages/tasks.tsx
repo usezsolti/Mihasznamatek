@@ -4,11 +4,7 @@ import Head from "next/head";
 import Link from "next/link";
 
 // Firebase típus definíciók
-declare global {
-    interface Window {
-        firebase: any;
-    }
-}
+// Window interface már definiálva van a types/global.d.ts fájlban
 
 type Task = {
     id: string;
@@ -90,13 +86,13 @@ export default function Tasks() {
 
                         // Felhasználó-specifikus feladatok szűrése
                         if (userData.email === 'anna@example.com') {
-                            userTasks = adminTasks.filter((task: any) => task.studentId === 'demo_1');
+                            userTasks = adminTasks.filter((task: Task) => task.studentId === 'demo_1');
                             console.log('Kovács Anna feladatai:', userTasks.length);
                         } else if (userData.email === 'peter@example.com') {
-                            userTasks = adminTasks.filter((task: any) => task.studentId === 'demo_2');
+                            userTasks = adminTasks.filter((task: Task) => task.studentId === 'demo_2');
                             console.log('Nagy Péter feladatai:', userTasks.length);
                         } else if (userData.email === 'eszter@example.com') {
-                            userTasks = adminTasks.filter((task: any) => task.studentId === 'demo_3');
+                            userTasks = adminTasks.filter((task: Task) => task.studentId === 'demo_3');
                             console.log('Szabó Eszter feladatai:', userTasks.length);
                         } else if (userData.uid === '4lUUn5fX4sZ79pVoy5y4t3hJFpF3') {
                             // Admin látja az összes admin által kiosztott feladatot
@@ -196,7 +192,7 @@ export default function Tasks() {
                 const auth = window.firebase.auth();
                 const db = window.firebase.firestore();
 
-                const unsub = auth.onAuthStateChanged(async (user: any) => {
+                const unsub = auth.onAuthStateChanged(async (user: { uid: string; email?: string; displayName?: string }) => {
                     if (user) {
                         try {
                             const userSnap = await db.collection("users").doc(user.uid).get();
@@ -236,7 +232,7 @@ export default function Tasks() {
         // Admin panel frissítése
         try {
             const adminTasks = JSON.parse(localStorage.getItem('admin_tasks') || '[]');
-            const taskIndex = adminTasks.findIndex((task: any) => task.id === taskId);
+            const taskIndex = adminTasks.findIndex((task: Task) => task.id === taskId);
 
             if (taskIndex !== -1) {
                 adminTasks[taskIndex].completed = !adminTasks[taskIndex].completed;
@@ -263,7 +259,7 @@ export default function Tasks() {
                         completedDate: !currentStatus ? new Date().toISOString() : null
                     });
                 }
-            } catch (err: any) {
+            } catch (err: unknown) {
                 console.warn("Firebase frissítés nem sikerült:", err);
             }
         }
@@ -299,7 +295,7 @@ export default function Tasks() {
                 await window.firebase.auth().signOut();
             }
             router.push("/");
-        } catch (err: any) {
+        } catch (err: unknown) {
             console.warn("Kijelentkezési hiba:", err);
             router.push("/");
         }

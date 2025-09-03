@@ -167,7 +167,7 @@ const VideoScrollGame: React.FC = () => {
             window.removeEventListener('scroll', handleScroll);
             canvas.removeEventListener('mousemove', handleMouseMove);
         };
-    }, [scrollY]);
+    }, [scrollY, carX, gameElements]);
 
     return (
         <div className="video-scroll-game-container">

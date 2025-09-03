@@ -2,11 +2,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 
 // Firebase típus definíciók
-declare global {
-    interface Window {
-        firebase: any;
-    }
-}
+// Window interface már definiálva van a types/global.d.ts fájlban
 
 type UserDoc = {
     uid?: string;
@@ -92,7 +88,7 @@ export default function Dashboard() {
                 const auth = window.firebase.auth();
                 const db = window.firebase.firestore();
 
-                const unsub = auth.onAuthStateChanged(async (user: any) => {
+                const unsub = auth.onAuthStateChanged(async (user: { uid: string; email?: string; displayName?: string }) => {
                     if (!user) {
                         router.replace("/");
                         return;

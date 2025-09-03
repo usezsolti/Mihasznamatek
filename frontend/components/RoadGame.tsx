@@ -51,7 +51,7 @@ const RoadGame: React.FC = () => {
     const billboardsRef = useRef<THREE.Group | null>(null);
     const [currentBillboard, setCurrentBillboard] = useState(0);
     const [isMouseDown, setIsMouseDown] = useState(false);
-    const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+    const [mousePosition] = useState({ x: 0, y: 0 });
 
     useEffect(() => {
         if (!mountRef.current) return;

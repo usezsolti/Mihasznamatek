@@ -42,9 +42,9 @@ export default function Booking() {
     useEffect(() => {
         if (typeof window !== 'undefined') {
             const checkEmailJS = () => {
-                if ((window as any).emailjs) {
+                if (window.emailjs) {
                     console.log("EmailJS betöltődött, inicializálás...");
-                    (window as any).emailjs.init("_UgC1pw0jHHqLl6sG");
+                    window.emailjs.init("_UgC1pw0jHHqLl6sG");
                     console.log("EmailJS inicializálva");
                 } else {
                     console.log("EmailJS még nem töltődött be, újrapróbálás...");
@@ -67,7 +67,6 @@ export default function Booking() {
         const year = currentMonth.getFullYear();
         const month = currentMonth.getMonth();
         const firstDay = new Date(year, month, 1);
-        const lastDay = new Date(year, month + 1, 0);
         const startDate = new Date(firstDay);
         startDate.setDate(startDate.getDate() - firstDay.getDay());
 
@@ -324,7 +323,6 @@ END:VCALENDAR`;
 
         try {
             // File Base64 encoding (only for small files)
-            let fileData: string[] = [];
             if (uploadedFiles.length > 0) {
                 const maxFileSize = 500 * 1024; // 500KB limit
                 const smallFiles = uploadedFiles.filter(file => file.size <= maxFileSize);
@@ -340,12 +338,12 @@ END:VCALENDAR`;
                             reader.readAsDataURL(file);
                         });
                     });
-                    fileData = await Promise.all(filePromises);
+                    await Promise.all(filePromises);
                 }
             }
 
             // EmailJS booking request
-            if (typeof window !== 'undefined' && (window as any).emailjs) {
+            if (typeof window !== 'undefined' && window.emailjs) {
                 const totalPrice = selectedTimes.length * 5500;
                 const timeSlotsText = selectedTimes.map(time => {
                     const bookingKey = `${selectedDate}_${time}`;
@@ -379,7 +377,7 @@ Kérjük, jelezze vissza a foglaló felé a foglalás elfogadását vagy elutas�
 
                 let emailSent = false;
                 try {
-                    await (window as any).emailjs.send(
+                    await window.emailjs.send(
                         'service_fnoxi68',
                         'template_rt2i7ou',
                         emailParams

@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 
 export default function Navbar() {
     const router = useRouter();
-    const [currentUser, setCurrentUser] = useState<any>(null);
+    const [currentUser, setCurrentUser] = useState<{ uid: string; name: string; email: string } | null>(null);
 
     useEffect(() => {
         const user = localStorage.getItem('currentUser');

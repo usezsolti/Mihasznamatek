@@ -25,7 +25,7 @@ export default function Verify() {
             const pendingVerifications = JSON.parse(localStorage.getItem('pending_verifications') || '[]');
             console.log('Pending verifications:', pendingVerifications);
 
-            const verification = pendingVerifications.find((v: any) =>
+            const verification = pendingVerifications.find((v: { email: string; token: string; uid: string }) =>
                 v.token === token && v.email === email
             );
 
@@ -34,7 +34,7 @@ export default function Verify() {
             if (verification) {
                 // Token érvényes, felhasználó verifikálása
                 const users = JSON.parse(localStorage.getItem('admin_users') || '[]');
-                const userIndex = users.findIndex((u: any) => u.email === email);
+                const userIndex = users.findIndex((u: { email: string; verified?: boolean }) => u.email === email);
 
                 console.log('Felhasználó index:', userIndex);
 
@@ -45,7 +45,7 @@ export default function Verify() {
                     localStorage.setItem('admin_users', JSON.stringify(users));
 
                     // Token eltávolítása a pending listából
-                    const updatedPending = pendingVerifications.filter((v: any) =>
+                    const updatedPending = pendingVerifications.filter((v: { email: string; token: string; uid: string }) =>
                         !(v.token === token && v.email === email)
                     );
                     localStorage.setItem('pending_verifications', JSON.stringify(updatedPending));
@@ -70,7 +70,7 @@ export default function Verify() {
                     localStorage.setItem('admin_users', JSON.stringify(users));
 
                     // Token eltávolítása a pending listából
-                    const updatedPending = pendingVerifications.filter((v: any) =>
+                    const updatedPending = pendingVerifications.filter((v: { email: string; token: string; uid: string }) =>
                         !(v.token === token && v.email === email)
                     );
                     localStorage.setItem('pending_verifications', JSON.stringify(updatedPending));

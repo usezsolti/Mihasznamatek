@@ -1,12 +1,13 @@
-import type { NextConfig } from "next";
+import type { NextConfig } from 'next'
 
 const nextConfig: NextConfig = {
-  images: {
-    unoptimized: true, // Mivel statikus képeket használunk
+  reactStrictMode: true,
+  eslint: {
+    ignoreDuringBuilds: false,
   },
-  experimental: {
-    appDir: false,
+  typescript: {
+    ignoreBuildErrors: false,
   },
-};
+}
 
-export default nextConfig;
+export default nextConfig

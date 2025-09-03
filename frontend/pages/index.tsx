@@ -11,11 +11,7 @@ import InteractiveHeader from "../components/InteractiveHeader";
 import CookieBanner from "../components/CookieBanner";
 
 // Firebase típus definíciók
-declare global {
-    interface Window {
-        firebase: any;
-    }
-}
+// Window interface már definiálva van a types/global.d.ts fájlban
 
 
 
@@ -36,7 +32,7 @@ export default function Home() {
         console.log("E-mail küldés kezdeményezve:", { contactName, contactEmail, contactMessage });
 
         try {
-            if (typeof window !== 'undefined' && (window as any).emailjs) {
+            if (typeof window !== 'undefined' && window.emailjs) {
                 // Első próba: templateParams használata
                 try {
                     const templateParams = {
@@ -49,7 +45,7 @@ export default function Home() {
 
                     console.log("Template params:", templateParams);
                     console.log("emailjs.send használata");
-                    await (window as any).emailjs.send("service_fnoxi68", "template_rt2i7ou", templateParams);
+                    await window.emailjs.send("service_fnoxi68", "template_rt2i7ou", templateParams);
                 } catch (templateError) {
                     console.error("Template params hiba:", templateError);
 
@@ -57,7 +53,7 @@ export default function Home() {
                     console.log("Form adatok használata...");
                     const formElement = document.getElementById('email-form') as HTMLFormElement;
                     if (formElement) {
-                        await (window as any).emailjs.sendForm("service_fnoxi68", "template_rt2i7ou", formElement);
+                        await window.emailjs.sendForm("service_fnoxi68", "template_rt2i7ou", formElement);
                     } else {
                         throw new Error("Form nem található");
                     }
@@ -84,9 +80,9 @@ export default function Home() {
         if (typeof window !== 'undefined') {
             // Várunk, hogy az EmailJS betöltődjön
             const checkEmailJS = () => {
-                if ((window as any).emailjs) {
+                if (window.emailjs) {
                     console.log("EmailJS betöltődött, inicializálás...");
-                    (window as any).emailjs.init("_UgC1pw0jHHqLl6sG");
+                    window.emailjs.init("_UgC1pw0jHHqLl6sG");
                     console.log("EmailJS inicializálva");
                 } else {
                     console.log("EmailJS még nem töltődött be, újrapróbálás...");

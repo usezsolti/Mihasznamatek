@@ -18,11 +18,11 @@ const sendVerificationEmail = async (email: string, name: string, uid: string) =
     try {
         console.log("Verifikációs e-mail küldés kezdeményezve:", { email, name, uid });
 
-        if (typeof window !== 'undefined' && (window as any).emailjs) {
+        if (typeof window !== 'undefined' && window.emailjs) {
             console.log("EmailJS elérhető, inicializálás ellenőrzése...");
 
             // EmailJS inicializálás ellenőrzése
-            if (!(window as any).emailjs.init) {
+            if (!window.emailjs.init) {
                 console.error("EmailJS init függvény nem elérhető");
                 return;
             }
@@ -45,7 +45,7 @@ const sendVerificationEmail = async (email: string, name: string, uid: string) =
             console.log("EmailJS küldés kezdeményezve...");
 
             // EmailJS küldés
-            const result = await (window as any).emailjs.send("service_fnoxi68", "template_rt2i7ou", templateParams);
+            const result = await window.emailjs.send("service_fnoxi68", "template_rt2i7ou", templateParams);
             console.log("EmailJS válasz:", result);
 
             // Token mentése localStorage-ba (ideiglenes megoldás)
@@ -64,7 +64,7 @@ const sendVerificationEmail = async (email: string, name: string, uid: string) =
             console.error("EmailJS nem elérhető");
             return false;
         }
-    } catch (error: any) {
+    } catch (error: unknown) {
         console.error("Verifikációs e-mail küldési hiba:", error);
         console.error("Hiba részletek:", {
             message: error?.message || 'Ismeretlen hiba',
@@ -111,7 +111,7 @@ const addUserToAdminDB = (userData: {
         };
 
         // Ellenőrizzük, hogy nincs-e már ilyen email
-        const existingUser = users.find((user: any) => user.email === userData.email);
+        const existingUser = users.find((user: { email: string }) => user.email === userData.email);
         if (!existingUser) {
             users.push(newUser);
             localStorage.setItem('admin_users', JSON.stringify(users));
@@ -217,22 +217,22 @@ export default function Register() {
             const uid = generateUID();
 
             // Firebase regisztráció
-            if (typeof window !== "undefined" && (window as any).firebase) {
+            if (typeof window !== "undefined" && window.firebase) {
                 try {
-                const auth = (window as any).firebase.auth();
-                const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+                    const auth = window.firebase.auth();
+                    const userCredential = await auth.createUserWithEmailAndPassword(email, password);
 
-                // Profil frissítése
+                    // Profil frissítése
                     const fullName = `${firstName} ${lastName}`.trim();
                     await userCredential.user?.updateProfile({ displayName: fullName });
 
-                // Felhasználó hozzáadása az admin adatbázishoz
+                    // Felhasználó hozzáadása az admin adatbázishoz
                     const fullAddress = `${postalCode} ${city}, ${street} ${houseNumber}${apartment ? ` ${apartment}` : ''}`.trim();
 
-                addUserToAdminDB({
-                    uid,
+                    addUserToAdminDB({
+                        uid,
                         name: fullName,
-                    email,
+                        email,
                         password,
                         phone: selectedCountryCode + phoneNumber,
                         address: fullAddress,
@@ -252,7 +252,7 @@ export default function Register() {
                         setMsg("Regisztráció sikeres, de a verifikációs e-mail küldése nem sikerült. Kérlek próbáld újra később.");
                         setTimeout(() => router.push('/dashboard'), 3000);
                     }
-                } catch (firebaseError: any) {
+                } catch (firebaseError: unknown) {
                     console.error("Firebase Auth hiba:", firebaseError);
 
                     // Ha a felhasználó már létezik, csak hozzáadjuk az admin adatbázishoz
@@ -300,7 +300,7 @@ export default function Register() {
                 setMsg("Sikeres regisztráció! (Firebase nélkül) Átirányítás...");
                 setTimeout(() => router.push('/dashboard'), 2000);
             }
-        } catch (err: any) {
+        } catch (err: unknown) {
             console.error('Regisztrációs hiba:', err);
             setMsg(err?.message ?? "Ismeretlen hiba történt a regisztráció során.");
         } finally {
@@ -1738,13 +1738,13 @@ export default function Register() {
 
                     <form onSubmit={onSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
                         <div style={{ display: 'flex', gap: '10px' }}>
-                        <input
-                            type="text"
+                            <input
+                                type="text"
                                 placeholder="Vezetéknév *"
-                            required
+                                required
                                 value={lastName}
                                 onChange={(e) => setLastName(e.target.value)}
-                            disabled={loading}
+                                disabled={loading}
                                 style={{
                                     flex: 1,
                                     padding: '12px 10px',
@@ -1793,13 +1793,13 @@ export default function Register() {
                         </div>
 
                         <div>
-                        <input
-                            type="email"
+                            <input
+                                type="email"
                                 placeholder="Email cím *"
-                            required
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            disabled={loading}
+                                required
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                disabled={loading}
                                 style={{
                                     width: '100%',
                                     padding: '15px',
@@ -1823,16 +1823,16 @@ export default function Register() {
 
                         <div>
                             <div style={{ position: 'relative' }}>
-                        <input
+                                <input
                                     type={showPassword ? "text" : "password"}
                                     placeholder="Jelszó *"
-                            required
-                            value={password}
+                                    required
+                                    value={password}
                                     onChange={(e) => {
                                         setPass(e.target.value);
                                         setPasswordStrength(checkPasswordStrength(e.target.value));
                                     }}
-                            disabled={loading}
+                                    disabled={loading}
                                     style={{
                                         width: '100%',
                                         padding: '15px 50px 15px 15px',
@@ -2001,12 +2001,12 @@ export default function Register() {
 
                                 {/* Telefonszám mező */}
                                 <div style={{ flex: 1, position: 'relative' }}>
-                        <input
-                            type="tel"
+                                    <input
+                                        type="tel"
                                         placeholder="Telefonszám *"
                                         value={phoneNumber}
                                         onChange={(e) => setPhoneNumber(e.target.value)}
-                            disabled={loading}
+                                        disabled={loading}
                                         style={{
                                             width: '100%',
                                             padding: '15px',
@@ -2190,11 +2190,11 @@ export default function Register() {
 
 
                         <div>
-                        <select
-                            required
+                            <select
+                                required
                                 value={educationLevel}
                                 onChange={(e) => setEducationLevel(e.target.value)}
-                            disabled={loading}
+                                disabled={loading}
                                 style={{
                                     width: '100%',
                                     padding: '15px',
@@ -2216,7 +2216,7 @@ export default function Register() {
                             >
                                 <option value="">Oktatási szint *</option>
                                 {educationLevels.map(level => <option key={level} value={level}>{level}</option>)}
-                        </select>
+                            </select>
                         </div>
 
                         <div>
@@ -2417,7 +2417,7 @@ export default function Register() {
                             color: 'rgba(255,255,255,0.7)',
                             fontSize: '14px'
                         }}>
-                        Már van fiókod?{" "}
+                            Már van fiókod?{" "}
                             <Link href="/" style={{
                                 color: '#39FF14',
                                 textDecoration: 'none',
@@ -2425,8 +2425,8 @@ export default function Register() {
                             }}>
                                 Bejelentkezés
                             </Link>
-                    </p>
-                </div>
+                        </p>
+                    </div>
                 </div>
             </div>
 

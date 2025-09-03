@@ -268,7 +268,7 @@ export default function Admin() {
     const manuallyVerifyUser = (email: string) => {
         try {
             const users = JSON.parse(localStorage.getItem('admin_users') || '[]');
-            const userIndex = users.findIndex((u: any) => u.email === email);
+            const userIndex = users.findIndex((u: UserDoc) => u.email === email);
 
             if (userIndex !== -1) {
                 users[userIndex].verified = true;
@@ -306,11 +306,11 @@ export default function Admin() {
             console.log("Admin verifikációs e-mail küldés kezdeményezve:", { email, name, uid });
 
             // EmailJS inicializálás ellenőrzése
-            if (typeof window !== 'undefined' && (window as any).emailjs) {
+            if (typeof window !== 'undefined' && window.emailjs) {
                 console.log("EmailJS elérhető az admin panelben");
 
                 // EmailJS inicializálás
-                if (!(window as any).emailjs.init) {
+                if (!window.emailjs.init) {
                     console.error("EmailJS init függvény nem elérhető");
                     setEmailStatus('❌ EmailJS inicializálási hiba!');
                     setTimeout(() => setEmailStatus(''), 3000);
@@ -318,7 +318,7 @@ export default function Admin() {
                 }
 
                 // EmailJS inicializálás
-                (window as any).emailjs.init("_UgC1pw0jHHqLl6sG");
+                window.emailjs.init("_UgC1pw0jHHqLl6sG");
                 console.log("EmailJS inicializálva");
 
                 const verificationToken = btoa(`${uid}_${Date.now()}`);
@@ -340,7 +340,7 @@ export default function Admin() {
 
                 try {
                     // Első próba: template paraméterekkel
-                    const result = await (window as any).emailjs.send("service_fnoxi68", "template_rt2i7ou", templateParams);
+                    const result = await window.emailjs.send("service_fnoxi68", "template_rt2i7ou", templateParams);
                     console.log("EmailJS válasz:", result);
 
                     // Token mentése localStorage-ba
@@ -356,7 +356,7 @@ export default function Admin() {
                     setEmailStatus('✅ E-mail sikeresen elküldve! Kérlek ellenőrizd a spam mappát is.');
                     setTimeout(() => setEmailStatus(''), 5000);
                     return true;
-                } catch (emailError: any) {
+                } catch (emailError: unknown) {
                     console.error("EmailJS küldési hiba (első próba):", emailError);
 
                     // Második próba: egyszerűbb paraméterekkel (mint a main.js-ben)
@@ -370,7 +370,7 @@ export default function Admin() {
                             reply_to: email
                         };
 
-                        const result2 = await (window as any).emailjs.send("service_fnoxi68", "template_rt2i7ou", simpleParams);
+                        const result2 = await window.emailjs.send("service_fnoxi68", "template_rt2i7ou", simpleParams);
                         console.log("EmailJS válasz (második próba):", result2);
 
                         // Token mentése localStorage-ba
@@ -386,11 +386,11 @@ export default function Admin() {
                         setEmailStatus('✅ E-mail sikeresen elküldve! (Második próba) Kérlek ellenőrizd a spam mappát is.');
                         setTimeout(() => setEmailStatus(''), 5000);
                         return true;
-                    } catch (simpleError: any) {
+                    } catch (simpleError: unknown) {
                         console.error("EmailJS küldési hiba (második próba):", simpleError);
 
                         // Részletes hibaüzenet
-                        const errorMessage = simpleError?.text || simpleError?.message || 'Ismeretlen hiba';
+                        const errorMessage = (simpleError as { text?: string; message?: string })?.text || (simpleError as { text?: string; message?: string })?.message || 'Ismeretlen hiba';
                         console.error("Hiba részletek:", errorMessage);
 
                         setEmailStatus(`❌ E-mail küldési hiba: ${errorMessage}`);
@@ -419,7 +419,7 @@ export default function Admin() {
 
                             document.body.appendChild(tempForm);
 
-                            const result3 = await (window as any).emailjs.sendForm("service_fnoxi68", "template_rt2i7ou", tempForm);
+                            const result3 = await window.emailjs.sendForm("service_fnoxi68", "template_rt2i7ou", tempForm);
                             console.log("EmailJS válasz (harmadik próba):", result3);
 
                             document.body.removeChild(tempForm);
@@ -437,10 +437,10 @@ export default function Admin() {
                             setEmailStatus('✅ E-mail sikeresen elküldve! (Harmadik próba) Kérlek ellenőrizd a spam mappát is.');
                             setTimeout(() => setEmailStatus(''), 5000);
                             return true;
-                        } catch (formError: any) {
+                        } catch (formError: unknown) {
                             console.error("EmailJS küldési hiba (harmadik próba):", formError);
 
-                            const finalErrorMessage = formError?.text || formError?.message || 'Ismeretlen hiba';
+                            const finalErrorMessage = (formError as { text?: string; message?: string })?.text || (formError as { text?: string; message?: string })?.message || 'Ismeretlen hiba';
                             setEmailStatus(`❌ E-mail küldési hiba (minden próba sikertelen): ${finalErrorMessage}`);
                             setTimeout(() => setEmailStatus(''), 5000);
                             return false;
@@ -453,9 +453,9 @@ export default function Admin() {
                 setTimeout(() => setEmailStatus(''), 5000);
                 return false;
             }
-        } catch (error: any) {
+        } catch (error: unknown) {
             console.error('Verifikációs e-mail hiba:', error);
-            setEmailStatus(`❌ Hiba az e-mail küldésekor: ${error?.message || 'Ismeretlen hiba'}`);
+            setEmailStatus(`❌ Hiba az e-mail küldésekor: ${(error as { message?: string })?.message || 'Ismeretlen hiba'}`);
             setTimeout(() => setEmailStatus(''), 5000);
             return false;
         }
@@ -480,10 +480,10 @@ export default function Admin() {
         // EmailJS inicializálás
         if (typeof window !== 'undefined') {
             const checkEmailJS = () => {
-                if ((window as any).emailjs) {
+                if (window.emailjs) {
                     console.log("EmailJS betöltődött, inicializálás...");
                     try {
-                        (window as any).emailjs.init("_UgC1pw0jHHqLl6sG");
+                        window.emailjs.init("_UgC1pw0jHHqLl6sG");
                         console.log("EmailJS sikeresen inicializálva");
                         setEmailStatus('✅ EmailJS készen áll az e-mail küldésre');
                         setTimeout(() => setEmailStatus(''), 3000);
@@ -556,7 +556,7 @@ export default function Admin() {
 
                         // E-mail küldés az új felhasználókhoz (automatikus verifikáció helyett)
                         const newUsers = currentUsers.slice(-newUsersCount);
-                        newUsers.forEach((user: any) => {
+                        newUsers.forEach((user: UserDoc) => {
                             if (!user.verified) {
                                 console.log('Verifikációs e-mail küldése:', user.email);
                                 sendVerificationEmail(user.email, user.name, user.uid);
@@ -638,7 +638,7 @@ export default function Admin() {
 
         try {
             // Firebase Auth törlése is (ha lehetséges)
-            if (typeof window !== 'undefined' && (window as any).firebase) {
+            if (typeof window !== 'undefined' && window.firebase) {
                 const user = users.find(u => u.uid === uid);
                 if (user) {
                     console.log("Firebase Auth törlés próbálása...");
@@ -709,7 +709,7 @@ export default function Admin() {
                 const snapshot = await firestore.collection("users").get();
 
                 let importedCount = 0;
-                snapshot.forEach((doc: any) => {
+                snapshot.forEach((doc: { data: () => UserDoc; id: string }) => {
                     const userData = doc.data();
                     const uid = doc.id;
 
@@ -718,7 +718,7 @@ export default function Admin() {
                     if (!existingUser) {
                         const newUser = {
                             uid: uid,
-                            name: userData.name || userData.fullName || userData.displayName || 'Ismeretlen',
+                            name: userData.name || 'Ismeretlen',
                             email: userData.email || '',
                             grade: userData.grade || 'Nincs megadva',
                             course: userData.course || 'Matematika',
@@ -1215,14 +1215,14 @@ export default function Admin() {
                                         const firstTest = testParams[0];
                                         console.log(`${firstTest.name} paraméterek:`, firstTest.params);
 
-                                        if (typeof window !== 'undefined' && (window as any).emailjs) {
-                                            (window as any).emailjs.send("service_fnoxi68", "template_rt2i7ou", firstTest.params).then(
-                                                (result: any) => {
+                                        if (typeof window !== 'undefined' && window.emailjs) {
+                                            window.emailjs.send("service_fnoxi68", "template_rt2i7ou", firstTest.params).then(
+                                                (result: { text: string }) => {
                                                     console.log(`${firstTest.name} sikeres:`, result);
                                                     setEmailStatus(`✅ ${firstTest.name} sikeresen elküldve!`);
                                                     setTimeout(() => setEmailStatus(''), 5000);
                                                 },
-                                                (error: any) => {
+                                                (error: { text?: string; message?: string }) => {
                                                     console.error(`${firstTest.name} hiba:`, error);
                                                     setEmailStatus(`❌ ${firstTest.name} küldési hiba!`);
                                                     setTimeout(() => setEmailStatus(''), 5000);
@@ -1264,14 +1264,14 @@ export default function Admin() {
 
                                         console.log('Teszt 2 paraméterek:', testParams);
 
-                                        if (typeof window !== 'undefined' && (window as any).emailjs) {
-                                            (window as any).emailjs.send("service_fnoxi68", "template_rt2i7ou", testParams).then(
-                                                (result: any) => {
+                                        if (typeof window !== 'undefined' && window.emailjs) {
+                                            window.emailjs.send("service_fnoxi68", "template_rt2i7ou", testParams).then(
+                                                (result: { text: string }) => {
                                                     console.log('Teszt 2 sikeres:', result);
                                                     setEmailStatus('✅ Teszt 2 sikeresen elküldve!');
                                                     setTimeout(() => setEmailStatus(''), 5000);
                                                 },
-                                                (error: any) => {
+                                                (error: { text?: string; message?: string }) => {
                                                     console.error('Teszt 2 hiba:', error);
                                                     setEmailStatus('❌ Teszt 2 küldési hiba!');
                                                     setTimeout(() => setEmailStatus(''), 5000);
@@ -1313,14 +1313,14 @@ export default function Admin() {
 
                                         console.log('Teszt 3 paraméterek:', testParams);
 
-                                        if (typeof window !== 'undefined' && (window as any).emailjs) {
-                                            (window as any).emailjs.send("service_fnoxi68", "template_rt2i7ou", testParams).then(
-                                                (result: any) => {
+                                        if (typeof window !== 'undefined' && window.emailjs) {
+                                            window.emailjs.send("service_fnoxi68", "template_rt2i7ou", testParams).then(
+                                                (result: { text: string }) => {
                                                     console.log('Teszt 3 sikeres:', result);
                                                     setEmailStatus('✅ Teszt 3 sikeresen elküldve!');
                                                     setTimeout(() => setEmailStatus(''), 5000);
                                                 },
-                                                (error: any) => {
+                                                (error: { text?: string; message?: string }) => {
                                                     console.error('Teszt 3 hiba:', error);
                                                     setEmailStatus('❌ Teszt 3 küldési hiba!');
                                                     setTimeout(() => setEmailStatus(''), 5000);
@@ -1355,8 +1355,8 @@ export default function Admin() {
                                 color: 'white'
                             }}>
                                 <div><strong>EmailJS Debug:</strong></div>
-                                <div>Elérhető: {typeof window !== 'undefined' && (window as any).emailjs ? '✅ Igen' : '❌ Nem'}</div>
-                                <div>Init: {typeof window !== 'undefined' && (window as any).emailjs?.init ? '✅ Igen' : '❌ Nem'}</div>
+                                <div>Elérhető: {typeof window !== 'undefined' && window.emailjs ? '✅ Igen' : '❌ Nem'}</div>
+                                <div>Init: {typeof window !== 'undefined' && window.emailjs ? '✅ Igen' : '❌ Nem'}</div>
                                 <div>Service: service_fnoxi68</div>
                                 <div>Template: template_rt2i7ou</div>
                                 <div>API Key: _UgC1pw0jHHqLl6sG</div>
@@ -1435,12 +1435,12 @@ export default function Admin() {
                             {/* EmailJS újratöltés gomb */}
                             <button
                                 onClick={() => {
-                                    if (typeof window !== 'undefined' && (window as any).emailjs) {
+                                    if (typeof window !== 'undefined' && window.emailjs) {
                                         try {
-                                            (window as any).emailjs.init("_UgC1pw0jHHqLl6sG");
+                                            window.emailjs.init("_UgC1pw0jHHqLl6sG");
                                             setEmailStatus('✅ EmailJS újrainicializálva!');
                                             setTimeout(() => setEmailStatus(''), 3000);
-                                        } catch (error) {
+                                        } catch {
                                             setEmailStatus('❌ EmailJS újrainicializálási hiba!');
                                             setTimeout(() => setEmailStatus(''), 3000);
                                         }

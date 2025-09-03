@@ -16,7 +16,7 @@ const SimpleGame: React.FC = () => {
 
         // Autó pozíció
         let carX = 400;
-        let carY = 300;
+        const carY = 300;
 
         // Játék loop
         const gameLoop = () => {

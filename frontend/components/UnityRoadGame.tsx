@@ -40,7 +40,6 @@ const UnityRoadGame: React.FC = () => {
     const [progress, setProgress] = useState(0);
     const [isClient, setIsClient] = useState(false);
     const [Unity, setUnity] = useState<any>(null);
-    const [UnityContext, setUnityContext] = useState<any>(null);
     const [unityContext, setUnityContextInstance] = useState<any>(null);
 
     useEffect(() => {
@@ -93,7 +92,7 @@ const UnityRoadGame: React.FC = () => {
                 unityContext.removeAllEventListeners();
             }
         };
-    }, []);
+    }, [unityContext]);
 
     const handleMouseMove = (e: React.MouseEvent) => {
         if (!unityContext || !unityContext.isLoaded) return;
