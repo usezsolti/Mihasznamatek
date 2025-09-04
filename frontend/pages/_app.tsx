@@ -5,10 +5,14 @@ import "../public/unreal-game.css";
 import type { AppProps } from "next/app";
 import Head from "next/head";
 import Script from "next/script";
+import { useRouter } from "next/router";
 import Navbar from "../components/Navbar";   // DEFAULT import!
 
 
 export default function App({ Component, pageProps }: AppProps) {
+    const router = useRouter();
+    const isDashboard = router.pathname === '/dashboard';
+
     return (
         <div suppressHydrationWarning>
             <>
@@ -28,7 +32,7 @@ export default function App({ Component, pageProps }: AppProps) {
                 <Script src="/firebase-init.js" strategy="beforeInteractive" />
                 <Script src="/main.js" strategy="afterInteractive" />
 
-                <Navbar />
+                {!isDashboard && <Navbar />}
                 <Component {...pageProps} />
             </>
         </div>

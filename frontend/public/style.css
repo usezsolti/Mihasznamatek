@@ -2469,3 +2469,311 @@ textarea::placeholder {
   opacity: 1;
   transform: translateY(0);
 }
+
+/* Google Login Button Styles */
+.auth-divider {
+  display: flex;
+  align-items: center;
+  margin: 1.5rem 0;
+  text-align: center;
+}
+
+.auth-divider::before,
+.auth-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.auth-divider span {
+  padding: 0 1rem;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.google-login-btn {
+  width: 100%;
+  padding: 1.2rem 2rem;
+  background: #ffffff;
+  border: 2px solid #dadce0;
+  border-radius: 12px;
+  color: #3c4043;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.google-login-btn:hover {
+  background: #f8f9fa;
+  border-color: #c1c7cd;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.google-login-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.google-login-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.google-login-btn svg {
+  flex-shrink: 0;
+}
+
+.google-login-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+  transition: left 0.6s ease;
+}
+
+.google-login-btn:hover::before {
+  left: 100%;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .google-login-btn {
+    padding: 1rem 1.5rem;
+    font-size: 1rem;
+  }
+
+  .auth-divider span {
+    font-size: 0.8rem;
+  }
+}
+
+/* Full-width Google Auth Card Styles */
+.google-auth-card {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 1.5rem;
+  padding: 3rem;
+  margin-top: 2rem;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.auth-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: center;
+  min-height: 400px;
+}
+
+.auth-explanation h3 {
+  color: var(--neon-green);
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  font-weight: 700;
+  text-shadow: 0 0 10px rgba(57, 255, 20, 0.3);
+}
+
+.benefits-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.benefit-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 1rem;
+  border-left: 3px solid var(--neon-green);
+  transition: all 0.3s ease;
+}
+
+.benefit-item:hover {
+  background: rgba(255, 255, 255, 0.08);
+  transform: translateX(5px);
+}
+
+.benefit-icon {
+  font-size: 2rem;
+  min-width: 50px;
+  text-align: center;
+}
+
+.benefit-text h4 {
+  color: #ffffff;
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.benefit-text p {
+  color: #a0a0a0;
+  font-size: 0.9rem;
+  line-height: 1.4;
+  margin: 0;
+}
+
+.auth-login {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.login-container {
+  text-align: center;
+  padding: 2rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 300px;
+}
+
+.login-container h3 {
+  color: #ffffff;
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.login-container p {
+  color: #a0a0a0;
+  font-size: 1rem;
+  margin-bottom: 2rem;
+  line-height: 1.4;
+}
+
+.google-login-btn-large {
+  background: #ffffff;
+  color: #333333;
+  border: none;
+  padding: 1.2rem 2rem;
+  border-radius: 50px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  min-width: 280px;
+}
+
+.google-login-btn-large:hover {
+  background: #f8f9fa;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+.google-login-btn-large:active {
+  transform: translateY(0);
+}
+
+.google-login-btn-large:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.google-login-btn-large svg {
+  flex-shrink: 0;
+}
+
+/* Responsive design for the new auth card */
+@media (max-width: 1024px) {
+  .auth-content {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+    text-align: center;
+    min-height: auto;
+  }
+
+  .google-auth-card {
+    padding: 2rem;
+  }
+
+  .benefit-item {
+    text-align: left;
+  }
+
+  .auth-login {
+    height: auto;
+    padding: 2rem 0;
+  }
+
+  .login-container {
+    min-height: 280px;
+  }
+}
+
+@media (max-width: 768px) {
+  .google-auth-card {
+    padding: 1.5rem;
+  }
+
+  .auth-explanation h3 {
+    font-size: 1.5rem;
+  }
+
+  .benefits-list {
+    gap: 1rem;
+  }
+
+  .benefit-item {
+    padding: 0.8rem;
+  }
+
+  .benefit-icon {
+    font-size: 1.5rem;
+    min-width: 40px;
+  }
+
+  .benefit-text h4 {
+    font-size: 1rem;
+  }
+
+  .benefit-text p {
+    font-size: 0.85rem;
+  }
+
+  .auth-login {
+    height: auto;
+    padding: 1.5rem 0;
+  }
+
+  .login-container {
+    padding: 1.5rem;
+    min-height: 250px;
+  }
+
+  .google-login-btn-large {
+    min-width: 250px;
+    padding: 1rem 1.5rem;
+    font-size: 1rem;
+  }
+}

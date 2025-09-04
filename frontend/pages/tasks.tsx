@@ -18,6 +18,9 @@ type Task = {
     assignedDate: string;
     solution?: string;
     notes?: string;
+    type?: 'regular' | 'mini-game';
+    gameComponent?: string;
+    studentId?: string;
 };
 
 type UserDoc = {
@@ -351,6 +354,10 @@ export default function Tasks() {
                                 <span className="nav-icon">📝</span>
                                 <span className="nav-text">Feladatok</span>
                             </div>
+                            <Link href="/game" className="nav-item">
+                                <span className="nav-icon">🎮</span>
+                                <span className="nav-text">Game</span>
+                            </Link>
                             <Link href="/profile" className="nav-item">
                                 <span className="nav-icon">👤</span>
                                 <span className="nav-text">Profil</span>
@@ -510,7 +517,14 @@ export default function Tasks() {
                                             )}
                                             <div className="task-header">
                                                 <div className="task-info">
-                                                    <h3 className="task-title">{task.title}</h3>
+                                                    <h3 className="task-title">
+                                                        {task.title}
+                                                        {task.type === 'mini-game' && (
+                                                            <span className="mini-game-badge">
+                                                                🎮 MINI-JÁTÉK
+                                                            </span>
+                                                        )}
+                                                    </h3>
                                                     <div className="task-meta">
                                                         <span className="task-subject">📚 {task.subject}</span>
                                                         <span
@@ -562,6 +576,23 @@ export default function Tasks() {
                                             </div>
 
                                             <div className="task-footer">
+                                                <div className="task-actions">
+                                                    {task.type === 'mini-game' && (
+                                                        <button
+                                                            className="play-game-btn"
+                                                            onClick={() => {
+                                                                // Mini-játék indítása új ablakban
+                                                                const gameWindow = window.open(
+                                                                    `/mini-game/${task.gameComponent}`,
+                                                                    'MathCraftGame',
+                                                                    'width=1200,height=800,scrollbars=yes,resizable=yes'
+                                                                );
+                                                            }}
+                                                        >
+                                                            🎮 JÁTÉK INDÍTÁSA
+                                                        </button>
+                                                    )}
+                                                </div>
                                                 <span className="assigned-date">
                                                     Hozzárendelve: {new Date(task.assignedDate).toLocaleDateString('hu-HU')}
                                                 </span>
@@ -934,6 +965,22 @@ export default function Tasks() {
                     margin: 0 0 0.75rem 0;
                     line-height: 1.3;
                     text-shadow: none;
+                    display: flex;
+                    align-items: center;
+                    gap: 0.5rem;
+                    flex-wrap: wrap;
+                }
+
+                .mini-game-badge {
+                    background: linear-gradient(45deg, #FF49DB, #39FF14);
+                    color: white;
+                    padding: 0.25rem 0.75rem;
+                    border-radius: 20px;
+                    font-size: 0.75rem;
+                    font-weight: 600;
+                    text-transform: uppercase;
+                    letter-spacing: 0.5px;
+                    white-space: nowrap;
                 }
 
                 .task-meta {
@@ -1043,6 +1090,36 @@ export default function Tasks() {
                 .task-footer {
                     border-top: 1px solid #e5e7eb;
                     padding-top: 1rem;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    flex-wrap: wrap;
+                    gap: 1rem;
+                }
+
+                .task-actions {
+                    display: flex;
+                    gap: 0.5rem;
+                }
+
+                .play-game-btn {
+                    background: linear-gradient(45deg, #FF49DB, #39FF14);
+                    color: white;
+                    border: none;
+                    padding: 0.75rem 1.5rem;
+                    border-radius: 25px;
+                    font-size: 0.875rem;
+                    font-weight: 600;
+                    cursor: pointer;
+                    transition: all 0.3s ease;
+                    text-transform: uppercase;
+                    letter-spacing: 0.5px;
+                    box-shadow: 0 4px 15px rgba(255, 73, 219, 0.3);
+                }
+
+                .play-game-btn:hover {
+                    transform: translateY(-2px);
+                    box-shadow: 0 6px 20px rgba(255, 73, 219, 0.4);
                 }
 
                 .assigned-date {

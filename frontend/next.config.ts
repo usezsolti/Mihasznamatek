@@ -1,13 +1,18 @@
 import type { NextConfig } from 'next'
 
 const nextConfig: NextConfig = {
-  reactStrictMode: true,
+  reactStrictMode: false,
   eslint: {
-    ignoreDuringBuilds: true, // Ideiglenesen kikapcsolva
+    ignoreDuringBuilds: true,
   },
   typescript: {
-    ignoreBuildErrors: true, // Ideiglenesen kikapcsolva
+    ignoreBuildErrors: true,
   },
+  experimental: {
+    // Remove any deprecated options
+  },
+  // Disable linting completely during build
+  swcMinify: true,
 }
 
 export default nextConfig

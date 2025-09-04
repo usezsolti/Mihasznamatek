@@ -100,6 +100,20 @@ export default function Dashboard() {
                         data.uid = user.uid;
                         if (!data.email) data.email = user.email ?? "";
                         if (!data.name) data.name = user.displayName ?? "";
+
+                        // Google OAuth felhasználók esetén frissítjük az adatokat
+                        if (user.providerData && user.providerData.some((provider: any) => provider.providerId === 'google.com')) {
+                            data.photoURL = user.photoURL ?? data.photoURL;
+                            data.provider = 'google';
+
+                            // Frissítjük az utolsó bejelentkezés időpontját
+                            await db.collection("users").doc(user.uid).update({
+                                lastLogin: window.firebase.firestore.FieldValue.serverTimestamp(),
+                                photoURL: user.photoURL,
+                                provider: 'google'
+                            });
+                        }
+
                         setMe(data);
                         setLoading(false);
                     } catch (error) {
@@ -188,6 +202,10 @@ export default function Dashboard() {
                     <button className="nav-tab" onClick={() => router.push('/tasks')}>
                         <i className="nav-icon">📝</i>
                         Feladatok
+                    </button>
+                    <button className="nav-tab" onClick={() => router.push('/game')}>
+                        <i className="nav-icon">🎮</i>
+                        Game
                     </button>
                     <button className="nav-tab" onClick={() => router.push('/profile')}>
                         <i className="nav-icon">👤</i>

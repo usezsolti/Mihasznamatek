@@ -27,6 +27,8 @@ type Task = {
     assignedBy: string;
     assignedDate: string;
     studentId: string;
+    type?: 'regular' | 'mini-game';
+    gameComponent?: string;
 };
 
 // Saját adatbázis kezelő
@@ -162,6 +164,22 @@ class LocalDatabase {
         ];
 
         const demoTasks: Task[] = [
+            // Math-Craft Mini-Játék (Bakos Dominik számára)
+            {
+                id: "math_craft_1",
+                title: "Math-Craft: Level 1 - Matematikai Mini-Játék",
+                description: "Gamifikált 3. osztályos matematika óra XP rendszerrel, powerupokkal és quest-ekkel. Helyiérték feladatok, számszomszédok, 100-ra kiegészítés, szorzás alapjai.",
+                subject: "Matematika",
+                difficulty: "medium",
+                dueDate: "2024-12-31",
+                completed: false,
+                assignedBy: "Admin",
+                assignedDate: "2024-12-19",
+                studentId: "4lUUn5fX4sZ79pVoy5y4t3hJFpF3", // Bakos Dominik UID
+                type: "mini-game",
+                gameComponent: "MathCraftGame"
+            },
+
             // Kovács Anna feladatai (demo_1)
             {
                 id: "task_1",
@@ -466,7 +484,9 @@ export default function Admin() {
         description: '',
         subject: 'Matematika',
         difficulty: 'medium' as 'easy' | 'medium' | 'hard',
-        dueDate: ''
+        dueDate: '',
+        type: 'regular' as 'regular' | 'mini-game',
+        gameComponent: 'MathCraftGame'
     });
 
     const [newUser, setNewUser] = useState({
@@ -590,7 +610,9 @@ export default function Admin() {
             ...newTask,
             studentId: selectedUser.uid,
             assignedBy: "Admin",
-            completed: false
+            completed: false,
+            type: newTask.type || 'regular',
+            gameComponent: newTask.gameComponent || undefined
         });
 
         setAllTasks(db.getTasks());
@@ -601,7 +623,9 @@ export default function Admin() {
             description: '',
             subject: 'Matematika',
             difficulty: 'medium',
-            dueDate: ''
+            dueDate: '',
+            type: 'regular',
+            gameComponent: 'MathCraftGame'
         });
 
         setActiveTab('tasks');
@@ -935,10 +959,24 @@ export default function Admin() {
                                 color: 'white',
                                 padding: '10px 20px',
                                 borderRadius: '25px',
-                                cursor: 'pointer'
+                                cursor: 'pointer',
+                                marginRight: '10px'
                             }}
                         >
                             🏠 Kezdőlap
+                        </button>
+                        <button
+                            onClick={() => router.push('/game')}
+                            style={{
+                                background: 'linear-gradient(45deg, #FF49DB, #39FF14)',
+                                border: 'none',
+                                color: 'white',
+                                padding: '10px 20px',
+                                borderRadius: '25px',
+                                cursor: 'pointer'
+                            }}
+                        >
+                            🎮 Game
                         </button>
                     </div>
                 </nav>
@@ -1870,7 +1908,21 @@ export default function Admin() {
                                                                 alignItems: 'flex-start'
                                                             }}>
                                                                 <div style={{ flex: 1 }}>
-                                                                    <h4 style={{ margin: '0 0 10px 0' }}>{task.title}</h4>
+                                                                    <h4 style={{ margin: '0 0 10px 0' }}>
+                                                                        {task.title}
+                                                                        {task.type === 'mini-game' && (
+                                                                            <span style={{
+                                                                                background: 'linear-gradient(45deg, #FF49DB, #39FF14)',
+                                                                                padding: '2px 8px',
+                                                                                borderRadius: '10px',
+                                                                                fontSize: '10px',
+                                                                                marginLeft: '8px',
+                                                                                color: 'white'
+                                                                            }}>
+                                                                                🎮 MINI-JÁTÉK
+                                                                            </span>
+                                                                        )}
+                                                                    </h4>
                                                                     <p style={{ margin: '0 0 15px 0', color: 'white' }}>{task.description}</p>
                                                                     <div style={{ display: 'flex', gap: '15px', flexWrap: 'wrap' }}>
                                                                         <span style={{
@@ -1899,21 +1951,45 @@ export default function Admin() {
                                                                         </span>
                                                                     </div>
                                                                 </div>
-                                                                <button
-                                                                    onClick={() => deleteTask(task.id)}
-                                                                    style={{
-                                                                        background: 'rgba(244, 67, 54, 0.3)',
-                                                                        border: 'none',
-                                                                        color: 'white',
-                                                                        padding: '8px 12px',
-                                                                        borderRadius: '8px',
-                                                                        cursor: 'pointer',
-                                                                        fontSize: '16px',
-                                                                        marginLeft: '15px'
-                                                                    }}
-                                                                >
-                                                                    🗑️
-                                                                </button>
+                                                                <div style={{ display: 'flex', gap: '8px', marginLeft: '15px' }}>
+                                                                    {task.type === 'mini-game' && (
+                                                                        <button
+                                                                            onClick={() => {
+                                                                                // Mini-játék indítása új ablakban
+                                                                                const gameWindow = window.open(
+                                                                                    `/mini-game/${task.gameComponent}`,
+                                                                                    'MathCraftGame',
+                                                                                    'width=1200,height=800,scrollbars=yes,resizable=yes'
+                                                                                );
+                                                                            }}
+                                                                            style={{
+                                                                                background: 'linear-gradient(45deg, #FF49DB, #39FF14)',
+                                                                                border: 'none',
+                                                                                color: 'white',
+                                                                                padding: '8px 12px',
+                                                                                borderRadius: '8px',
+                                                                                cursor: 'pointer',
+                                                                                fontSize: '12px'
+                                                                            }}
+                                                                        >
+                                                                            🎮 JÁTÉK
+                                                                        </button>
+                                                                    )}
+                                                                    <button
+                                                                        onClick={() => deleteTask(task.id)}
+                                                                        style={{
+                                                                            background: 'rgba(244, 67, 54, 0.3)',
+                                                                            border: 'none',
+                                                                            color: 'white',
+                                                                            padding: '8px 12px',
+                                                                            borderRadius: '8px',
+                                                                            cursor: 'pointer',
+                                                                            fontSize: '16px'
+                                                                        }}
+                                                                    >
+                                                                        🗑️
+                                                                    </button>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     ))
@@ -1962,6 +2038,43 @@ export default function Admin() {
                                                             }}
                                                         />
                                                     </div>
+                                                    <div>
+                                                        <label style={{ display: 'block', marginBottom: '8px', color: 'white' }}>Feladat Típusa</label>
+                                                        <select
+                                                            value={newTask.type || 'regular'}
+                                                            onChange={(e) => setNewTask({ ...newTask, type: e.target.value as 'regular' | 'mini-game' })}
+                                                            style={{
+                                                                width: '100%',
+                                                                padding: '12px',
+                                                                borderRadius: '8px',
+                                                                border: '1px solid rgba(255,255,255,0.2)',
+                                                                background: 'rgba(255,255,255,0.1)',
+                                                                color: 'white'
+                                                            }}
+                                                        >
+                                                            <option value="regular">📝 Szokványos Feladat</option>
+                                                            <option value="mini-game">🎮 Mini-Játék</option>
+                                                        </select>
+                                                    </div>
+                                                    {newTask.type === 'mini-game' && (
+                                                        <div>
+                                                            <label style={{ display: 'block', marginBottom: '8px', color: 'white' }}>Játék Komponens</label>
+                                                            <select
+                                                                value={newTask.gameComponent || 'MathCraftGame'}
+                                                                onChange={(e) => setNewTask({ ...newTask, gameComponent: e.target.value })}
+                                                                style={{
+                                                                    width: '100%',
+                                                                    padding: '12px',
+                                                                    borderRadius: '8px',
+                                                                    border: '1px solid rgba(255,255,255,0.2)',
+                                                                    background: 'rgba(255,255,255,0.1)',
+                                                                    color: 'white'
+                                                                }}
+                                                            >
+                                                                <option value="MathCraftGame">🎮 Math-Craft: Level 1</option>
+                                                            </select>
+                                                        </div>
+                                                    )}
                                                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '15px' }}>
                                                         <div>
                                                             <label style={{ display: 'block', marginBottom: '8px', color: 'white' }}>Nehézség</label>
