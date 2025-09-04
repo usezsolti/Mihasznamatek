@@ -172,7 +172,7 @@ const Testimonials: React.FC = () => {
                             {testimonials.map((testimonial) => (
                                 <div key={testimonial.id} className="testimonial-card">
                                     <div className="testimonial-content">
-                                        <p className="testimonial-text">"{testimonial.text}"</p>
+                                        <p className="testimonial-text" suppressHydrationWarning>&ldquo;{testimonial.text}&rdquo;</p>
                                         <div className="testimonial-footer">
                                             <div className="testimonial-avatar">
                                                 <Image
@@ -201,7 +201,7 @@ const Testimonials: React.FC = () => {
                             {testimonials.map((testimonial) => (
                                 <div key={`duplicate-${testimonial.id}`} className="testimonial-card">
                                     <div className="testimonial-content">
-                                        <p className="testimonial-text">"{testimonial.text}"</p>
+                                        <p className="testimonial-text" suppressHydrationWarning>&ldquo;{testimonial.text}&rdquo;</p>
                                         <div className="testimonial-footer">
                                             <div className="testimonial-avatar">
                                                 <Image
@@ -235,7 +235,7 @@ const Testimonials: React.FC = () => {
                             {testimonials.slice().reverse().map((testimonial) => (
                                 <div key={testimonial.id} className="testimonial-card">
                                     <div className="testimonial-content">
-                                        <p className="testimonial-text">"{testimonial.text}"</p>
+                                        <p className="testimonial-text" suppressHydrationWarning>&ldquo;{testimonial.text}&rdquo;</p>
                                         <div className="testimonial-footer">
                                             <div className="testimonial-avatar">
                                                 <Image
@@ -264,7 +264,7 @@ const Testimonials: React.FC = () => {
                             {testimonials.slice().reverse().map((testimonial) => (
                                 <div key={`duplicate-reverse-${testimonial.id}`} className="testimonial-card">
                                     <div className="testimonial-content">
-                                        <p className="testimonial-text">"{testimonial.text}"</p>
+                                        <p className="testimonial-text" suppressHydrationWarning>&ldquo;{testimonial.text}&rdquo;</p>
                                         <div className="testimonial-footer">
                                             <div className="testimonial-avatar">
                                                 <Image

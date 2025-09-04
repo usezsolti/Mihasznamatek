@@ -743,7 +743,7 @@ Kérjük, jelezze vissza a foglaló felé a foglalás elfogadását vagy elutas�
                                                 <div className="drag-drop-text">
                                                     <div className="drag-icon">📁</div>
                                                     <div className="drag-message">
-                                                        Húzza ide a fájlokat, vagy kattintson a "Fájlok kiválasztása" gombra
+                                                        Húzza ide a fájlokat, vagy kattintson a &quot;Fájlok kiválasztása&quot; gombra
                                                     </div>
                                                     <div className="drag-hint">
                                                         Támogatott formátumok: PDF, DOC, JPG, PNG, MP4, MP3, ZIP, stb. (Opcionális)

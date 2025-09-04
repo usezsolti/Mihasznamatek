@@ -709,8 +709,8 @@ export default function Admin() {
                 const snapshot = await firestore.collection("users").get();
 
                 let importedCount = 0;
-                snapshot.forEach((doc: { data: () => UserDoc; id: string }) => {
-                    const userData = doc.data();
+                snapshot.forEach((doc: { data: () => Record<string, unknown>; id: string }) => {
+                    const userData = doc.data() as UserDoc;
                     const uid = doc.id;
 
                     // Ellenőrizzük, hogy nincs-e már ilyen felhasználó
@@ -1217,7 +1217,7 @@ export default function Admin() {
 
                                         if (typeof window !== 'undefined' && window.emailjs) {
                                             window.emailjs.send("service_fnoxi68", "template_rt2i7ou", firstTest.params).then(
-                                                (result: { text: string }) => {
+                                                (result: unknown) => {
                                                     console.log(`${firstTest.name} sikeres:`, result);
                                                     setEmailStatus(`✅ ${firstTest.name} sikeresen elküldve!`);
                                                     setTimeout(() => setEmailStatus(''), 5000);
@@ -1266,7 +1266,7 @@ export default function Admin() {
 
                                         if (typeof window !== 'undefined' && window.emailjs) {
                                             window.emailjs.send("service_fnoxi68", "template_rt2i7ou", testParams).then(
-                                                (result: { text: string }) => {
+                                                (result: unknown) => {
                                                     console.log('Teszt 2 sikeres:', result);
                                                     setEmailStatus('✅ Teszt 2 sikeresen elküldve!');
                                                     setTimeout(() => setEmailStatus(''), 5000);
@@ -1315,7 +1315,7 @@ export default function Admin() {
 
                                         if (typeof window !== 'undefined' && window.emailjs) {
                                             window.emailjs.send("service_fnoxi68", "template_rt2i7ou", testParams).then(
-                                                (result: { text: string }) => {
+                                                (result: unknown) => {
                                                     console.log('Teszt 3 sikeres:', result);
                                                     setEmailStatus('✅ Teszt 3 sikeresen elküldve!');
                                                     setTimeout(() => setEmailStatus(''), 5000);
